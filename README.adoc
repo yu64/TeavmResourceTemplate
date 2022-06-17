@@ -1,3 +1,12 @@
-= GradleTemplate
+= TeaVMTemplate
 
-Gradle環境のテンプレート
+TeaVMによるリソース生成が可能な環境のテンプレート
+
+== サブプロジェクト
+
+app::
+本体
+teavm::
+TeaVMで使用されるJavaプログラム。JSに変換され、クラスパス上に配置される。
+	
+	
