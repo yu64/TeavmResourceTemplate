@@ -1,0 +1,132 @@
+
+
+
+//Gradleプラグインの指定
+plugins {
+
+	id 'application'
+	id 'java-library' 
+
+	//fat-jar作成プラグイン
+	id 'com.github.johnrengelman.shadow' version '5.0.0'
+	
+	//TeaVM
+	id 'io.github.zebalu.teavm-gradle-plugin' version '1.0.0'
+	
+}
+
+
+
+//すべてのプロジェクトの設定
+allprojects {
+
+    apply plugin: "eclipse"
+    
+    ext {
+    
+    	teavmOutputPath = "test/resources/";
+    }
+    
+    
+    repositories {
+
+        google()
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+
+        //implementation "AAAA:BBBB:VVVV"
+        //implementation fileTree(dir: 'lib', include: ["*"]);
+        //[newsourceset]Implementation ""
+    }
+    
+    
+	tasks.withType(JavaCompile) {
+	
+	    options.encoding = "UTF-8";
+	}
+
+    application {
+
+        mainClassName = "test.Main"
+    }
+}
+
+
+project(":app") {
+
+	apply plugin: "java-library"
+
+    dependencies {
+    
+    	implementation project(":teavm")
+    }
+
+}
+
+project(":teavm") {
+    apply plugin: "java-library"
+
+
+    dependencies {
+		
+		implementation 'org.teavm:teavm-jso-apis:0.7.0'
+    }
+}
+
+
+//タスクを作成
+//とある値の情報を表示する
+task printTest {
+
+    //タスクの処理ではなく、設定を記述する
+
+    //最後の処理を設定
+    doLast {
+        println('==========Task Start==========');
+        
+        def obj = this.jar;
+        
+        println("=====Method=====");
+        obj.metaClass.getMetaMethods().forEach({MetaMethod o -> println(o.getSignature())});
+        println("=====Property=====");
+        obj.metaClass.getProperties().forEach({MetaProperty o -> 
+
+            print(String.format("(%s) %s", o.getType(), o.getName()));
+            if(obj instanceof Class)
+            {
+                println();
+                return;
+            }
+
+            def value = null;
+            try
+            {
+                value = o.getProperty(obj);
+                println(String.format("   =   (%s) %s", value?.class, value));
+            }
+            catch(Exception e)
+            {
+                println(" = [N/A]");
+            }
+        })
+
+        println("=====Object=====");
+        println(obj.class);
+        println(obj);
+        println('==========Task End==========');
+    }
+
+}
+
+
+
+
+
+
+
+
+
+

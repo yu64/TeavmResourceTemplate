@@ -1,0 +1,12 @@
+
+
+//javaの設定
+java {
+
+    toolchain {
+        //Javaのバージョンを指定
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+eclipse.project.name = "app"

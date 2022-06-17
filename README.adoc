@@ -1,0 +1,3 @@
+= GradleTemplate
+
+Gradle環境のテンプレート
