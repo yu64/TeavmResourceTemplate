@@ -61,7 +61,10 @@ project(":app") {
 
     dependencies {
     
-    	implementation project(":teavm")
+    	implementation project(":teavm") {
+
+            exclude 'teavm-jso-apis' group: "org.teavm"
+        }
     }
 
 }
@@ -71,7 +74,7 @@ project(":teavm") {
 
 
     dependencies {
-		
+
 		implementation 'org.teavm:teavm-jso-apis:0.7.0'
     }
 }

@@ -42,3 +42,10 @@ task teavmc(type: io.github.zebalu.gradle.teavm.TeavmCompileTask) {
 
 processResources.dependsOn 'teavmc'
 
+
+//Java部分を除外
+tasks.withType(Jar) {
+
+    exclude("**/*.class")
+}
+
