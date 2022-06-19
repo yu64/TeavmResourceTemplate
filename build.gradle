@@ -61,10 +61,11 @@ project(":app") {
 
     dependencies {
     
-    	implementation project(":teavm") {
+        implementation project(":teavm")
+    	// implementation project(":teavm") {
 
-            exclude 'teavm-jso-apis' group: "org.teavm"
-        }
+        //     //exclude module: 'teavm-jso-apis'
+        // }
     }
 
 }
