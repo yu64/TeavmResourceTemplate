@@ -7,4 +7,11 @@
  * in the user manual at https://docs.gradle.org/6.3/userguide/multi_project_builds.html
  */
 include 'app','teavm'
-rootProject.name = 'TeavmResourceTemplate'
+//rootProject.name = 'TeavmResourceTemplate'
+
+//親フォルダの名前を使用する。
+def current = java.nio.file.Path.of(System.getProperty("user.dir")).getFileName().toString();
+rootProject.name = current;
+
+
+

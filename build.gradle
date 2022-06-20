@@ -94,11 +94,11 @@ task printTest {
         def obj = this.jar;
         
         println("=====Method=====");
-        obj.metaClass.getMetaMethods().forEach({MetaMethod o -> println(o.getSignature())});
+        obj.metaClass.getMetaMethods().forEach({println(getSignature())});
         println("=====Property=====");
-        obj.metaClass.getProperties().forEach({MetaProperty o -> 
+        obj.metaClass.getProperties().forEach({
 
-            print(String.format("(%s) %s", o.getType(), o.getName()));
+            print(String.format("(%s) %s", getType(), getName()));
             if(obj instanceof Class)
             {
                 println();
@@ -108,7 +108,7 @@ task printTest {
             def value = null;
             try
             {
-                value = o.getProperty(obj);
+                value = getProperty(obj);
                 println(String.format("   =   (%s) %s", value?.class, value));
             }
             catch(Exception e)
