@@ -52,6 +52,15 @@ public class Main {
 		}
 	}
 
+	public static void test3()
+	{
+		String path = "test/resources/app.js";
+		InputStream is = Main.class.getClassLoader().getResourceAsStream(path);
+		InputStreamReader isr = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isr);
+		
+		
+	}
 
 
 }
