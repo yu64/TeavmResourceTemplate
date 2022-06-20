@@ -5,6 +5,13 @@ plugins {
 	id "application"
 }
 
+dependencies {
+
+	 implementation 'io.github.classgraph:classgraph:4.8.147'
+}
+
+
+
 eclipse.project.name = "app"
 
 application {

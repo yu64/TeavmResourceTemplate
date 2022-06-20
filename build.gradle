@@ -60,6 +60,9 @@ subprojects {
 }
 
 
+
+
+
 project(":app") {
 
     dependencies {
@@ -68,19 +71,12 @@ project(":app") {
 
              exclude group: '*', module: '*'
         }
-        
-        implementation 'io.github.classgraph:classgraph:4.8.147'
-        
     }
 
 }
 
 project(":teavm") {
 
-    dependencies {
-
-		implementation 'org.teavm:teavm-jso-apis:0.7.0'
-    }
 }
 
 

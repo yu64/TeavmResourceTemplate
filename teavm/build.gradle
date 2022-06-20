@@ -7,6 +7,14 @@ plugins {
 	
 }
 
+dependencies {
+
+	implementation 'org.teavm:teavm-jso-apis:0.7.0'
+}
+
+
+
+
 eclipse.project.name = "teavm"
 
 teavm {
