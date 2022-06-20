@@ -1,10 +1,12 @@
 
 
 plugins {
-
-	//fat-jar作成プラグイン
-	id 'com.github.johnrengelman.shadow' version '5.0.0'
+	
 	
 }
 
 eclipse.project.name = "app"
+
+
+
+

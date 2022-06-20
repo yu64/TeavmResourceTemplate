@@ -1,46 +1,25 @@
 
-//javaの設定
-java {
-
-    toolchain {
-        //Javaのバージョンを指定
-        languageVersion = JavaLanguageVersion.of(11)
-    }
+plugins {
+	
+	//TeaVM
+	id 'io.github.zebalu.teavm-gradle-plugin' version '1.0.0'
+	
 }
 
 eclipse.project.name = "teavm"
 
 
 
-task printT {
+teavm {
 
-    doLast {
-
-        println "printT"
-    }
-}
-
-task teavmc(type: io.github.zebalu.gradle.teavm.TeavmCompileTask) {
-	
-	//出力
-	settings.targetDirectory = new File("${project.buildDir}/resources/main/${teavmOutputPath}");
-	
-    //mainメソッドの位置
-    settings.mainClass = application.mainClassName;
-
-	//html及びjavascriptから呼び出す場合の関数名
-	settings.entryPointName = "callTeavmScript";
-	
-	//出力ファイル名
-	settings.targetFileName = 'app.js'
-
-	doLast {
-		
-		println "Teavm Compiled"
-	}
+	targetDirectory = new File("${project.buildDir}/resources/main/${teavmOutputPath}");
+	mainClass = application.mainClassName;
+	entryPointName = "callTeavmScript";
+	targetFileName = "app.js"
 }
 
 processResources.dependsOn 'teavmc'
+
 
 
 //Java部分を除外

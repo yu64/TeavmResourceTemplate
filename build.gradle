@@ -1,17 +1,11 @@
 
 
 
-//Gradleプラグインの指定
+//このプロジェクトのGradleプラグインの指定
 plugins {
 
-	id 'application'
-	id 'java-library' 
-
 	//fat-jar作成プラグイン
-	id 'com.github.johnrengelman.shadow' version '5.0.0'
-	
-	//TeaVM
-	id 'io.github.zebalu.teavm-gradle-plugin' version '1.0.0'
+	//id 'com.github.johnrengelman.shadow' version '5.0.0'
 	
 }
 
@@ -20,8 +14,6 @@ plugins {
 //すべてのプロジェクトの設定
 allprojects {
 
-    apply plugin: "eclipse"
-    
     ext {
     
     	teavmOutputPath = "test/resources/";
@@ -48,31 +40,43 @@ allprojects {
 	    options.encoding = "UTF-8";
 	}
 
+}
+
+//サブプロジェクトの設定
+subprojects {
+
+    apply plugin: "application"
+    apply plugin: "java-library"
+
     application {
 
         mainClassName = "test.Main"
     }
+    
+    //javaの設定
+	java {
+
+	    toolchain {
+	        //Javaのバージョンを指定
+	        languageVersion = JavaLanguageVersion.of(11)
+	    }
+	}
 }
 
 
 project(":app") {
 
-	apply plugin: "java-library"
-
     dependencies {
     
-        implementation project(":teavm")
-    	// implementation project(":teavm") {
+    	implementation(project(":teavm")) {
 
-        //     //exclude module: 'teavm-jso-apis'
-        // }
+             exclude group: '*', module: '*'
+        }
     }
 
 }
 
 project(":teavm") {
-    apply plugin: "java-library"
-
 
     dependencies {
 
