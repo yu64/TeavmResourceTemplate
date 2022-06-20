@@ -2,11 +2,14 @@
 
 plugins {
 	
-	
+	id "application"
 }
 
 eclipse.project.name = "app"
 
+application {
 
+	mainClassName = "test.Main"
+}
 
 

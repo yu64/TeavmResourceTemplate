@@ -1,4 +1,4 @@
-package test;
+package test.teavm;
 
 import org.teavm.jso.browser.Window;
 import org.teavm.jso.dom.html.HTMLBodyElement;

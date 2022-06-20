@@ -1,6 +1,7 @@
 
 plugins {
 	
+	
 	//TeaVM
 	id 'io.github.zebalu.teavm-gradle-plugin' version '1.0.0'
 	
@@ -8,12 +9,10 @@ plugins {
 
 eclipse.project.name = "teavm"
 
-
-
 teavm {
 
 	targetDirectory = new File("${project.buildDir}/resources/main/${teavmOutputPath}");
-	mainClass = application.mainClassName;
+	mainClass = "test.teavm.Main";
 	entryPointName = "callTeavmScript";
 	targetFileName = "app.js"
 }
