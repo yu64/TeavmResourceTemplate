@@ -1,12 +1,10 @@
 
 
-//javaの設定
-java {
+plugins {
 
-    toolchain {
-        //Javaのバージョンを指定
-        languageVersion = JavaLanguageVersion.of(11)
-    }
+	//fat-jar作成プラグイン
+	id 'com.github.johnrengelman.shadow' version '5.0.0'
+	
 }
 
 eclipse.project.name = "app"
