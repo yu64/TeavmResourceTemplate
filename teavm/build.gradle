@@ -31,13 +31,16 @@ teavm {
 	targetFileName = "app.js"
 }
 
+//リソースを確定させる前に、TeaVMでリソースを生成させる
 processResources.dependsOn 'teavmc'
 
 
+classes.dependsOn -= 'complieJava'
+//complieJava.mustRunAfter 'classes'
 
 //Java部分を除外
-tasks.withType(Jar) {
+// tasks.withType(Jar) {
 
-    exclude("**/*.class")
-}
+//     exclude("**/*.class")
+// }
 

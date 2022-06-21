@@ -3,6 +3,7 @@
 plugins {
 	
 	id "application"
+	//id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
 
 dependencies {
@@ -25,4 +26,10 @@ application {
 	mainClassName = "test.Main"
 }
 
+//TeaVMのサブプロジェクトから、すべての内容をこのプロジェクトのJarに入れる
+// jar {
+//     from {
+//         project(":teavm").collect { it.sourceSets.main.allSource }
+//     }
+// }
 

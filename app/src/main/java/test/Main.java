@@ -29,6 +29,7 @@ public class Main {
 		Desktop.getDesktop().browse(new URI(app.getRootUrl()));
 		System.out.println("http://localhost:8080/stop");
 		
+		test.teavm.Main.main(null);
 	}
 
 	@Route("/")
