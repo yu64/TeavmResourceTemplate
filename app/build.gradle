@@ -7,7 +7,13 @@ plugins {
 
 dependencies {
 
-	 implementation 'io.github.classgraph:classgraph:4.8.147'
+	implementation 'io.github.classgraph:classgraph:4.8.147'
+	implementation 'com.github.pcdv.flak:flak-api:2.1.0'
+	implementation 'com.github.pcdv.flak:flak-backend-jdk:2.1.0'
+	
+	
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+
 }
 
 

@@ -15,18 +15,19 @@ plugins {
 allprojects {
 
     apply plugin: "eclipse"
-
-    ext {
     
-    	teavmOutputPath = "test/resources/";
-    }
-    
+    eclipse.classpath.downloadJavadoc = true
+    eclipse.classpath.downloadSources = true
     
     repositories {
 
         google()
         mavenCentral()
         jcenter()
+        maven
+        {
+            url "https://jitpack.io"
+        }
     }
 
     dependencies {

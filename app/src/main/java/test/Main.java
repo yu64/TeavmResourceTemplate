@@ -1,66 +1,72 @@
 package test;
 
+import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Map;
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ResourceList;
-import io.github.classgraph.ScanResult;
+import flak.App;
+import flak.Flak;
+import flak.annotations.Route;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception
 	{
-		System.out.println("Start");
-		Main.test2();
-		Main.test1();
-		System.out.println("End");
+		System.setProperty("file.encoding", "UTF-8");
+		System.out.println(Charset.defaultCharset());
+
+		App app = Flak.createHttpApp(8080);
+		app.scan(new Main());
+		app.start();
+
+		Desktop.getDesktop().browse(new URI(app.getRootUrl()));
+		System.out.println("http://localhost:8080/stop");
+		
 	}
-	
-	public static void test1()
+
+	@Route("/")
+	public String handle()
 	{
-		String path = "test/resources/app.js";
-
-		//path = "test/resources/test.txt";
-
-		InputStream is = Main.class.getClassLoader().getResourceAsStream(path);
-		InputStreamReader isr = new InputStreamReader(is);
+		String temp = "";
+		temp += "<!DOCTYPE html>";
+		temp += "<html>";
+		temp += "<head>";
+		temp += "<meta charset=\"UTF-8\">";
+		temp += "<script>%s</script>";
+		temp += "</head>";
+		temp += "<body>";
+		temp += "<p>テストHTML</p>";
+		temp += "<script>callTeavmScript()</script>";
+		temp += "</body>";
+		temp += "</html>";
+		
+		InputStream is = ClassLoader.getSystemResourceAsStream("test/resources/app.js");
+		InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8);
 		BufferedReader br = new BufferedReader(isr);
-		
-		System.out.println("Output");
-		br.lines().forEach(System.out::println);
+		String js = br.lines().collect(Collectors.joining());
+
+		return String.format(temp, js);
 	}
-	
-	public static void test2()
+
+	@Route("/stop")
+	public void stop()
 	{
-		ClassGraph graph = new ClassGraph()
-				
-				.acceptPackages("test.resources")
-				
-				;
-		
-		System.out.println(graph);
-		
-		try(ScanResult r = graph.scan())
-		{
-			Map<String, ResourceList> map = r.getAllResourcesAsMap();
+		Timer timer = new Timer();
+		timer.schedule(new TimerTask() {
 			
-			map.entrySet().stream()
-				.forEach(e -> System.out.println(e));
-		}
+			public void run() {
+
+				System.exit(0);
+			};
+
+		}, 1000);
+
 	}
-
-	public static void test3()
-	{
-		String path = "test/resources/app.js";
-		InputStream is = Main.class.getClassLoader().getResourceAsStream(path);
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader br = new BufferedReader(isr);
-		
-		
-	}
-
-
 }
