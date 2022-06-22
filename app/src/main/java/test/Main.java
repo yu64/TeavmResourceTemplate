@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,14 +13,12 @@ import java.util.stream.Collectors;
 import flak.App;
 import flak.Flak;
 import flak.annotations.Route;
+import test.innner.Test;
 
 public class Main {
 
 	public static void main(String[] args) throws Exception
 	{
-		System.setProperty("file.encoding", "UTF-8");
-		System.out.println(Charset.defaultCharset());
-
 		App app = Flak.createHttpApp(8080);
 		app.scan(new Main());
 		app.start();
@@ -29,7 +26,9 @@ public class Main {
 		Desktop.getDesktop().browse(new URI(app.getRootUrl()));
 		System.out.println("http://localhost:8080/stop");
 		
-		test.teavm.Main.main(null);
+		Test test = new Test();
+		test.teavm.Main main = new test.teavm.Main();
+		
 	}
 
 	@Route("/")

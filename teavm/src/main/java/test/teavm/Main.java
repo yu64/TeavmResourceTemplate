@@ -23,7 +23,6 @@ public class Main {
 		HTMLBodyElement body = doc.getBody();
 		body.insertBefore(h1, null);
 		body.insertBefore(a, null);
-
 	}
 
 

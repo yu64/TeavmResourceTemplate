@@ -1,6 +1,4 @@
-package test;
-
-import test.teavm.Main;
+package test.teavm;
 
 public class MainTest {
 

@@ -60,25 +60,48 @@ subprojects {
 	}
 }
 
+ext.getAllResources = {src ->
+
+    return src.allSource - src.allJava;
+}
 
 
 
+ext.printObjectInfo = {obj ->
 
-project(":app") {
+    println('==========Info Start==========');
+        
+    println("=====Method=====");
+    obj.metaClass.getMetaMethods().forEach({o -> println(o.getSignature())});
+    println("=====Property=====");
+    obj.metaClass.getProperties().forEach({o ->
 
-    dependencies {
-    
-    	implementation(project(":teavm")) {
-
-             exclude group: '*', module: '*'
+        print(String.format("(%s) %s", o.getType(), o.getName()));
+        if(obj instanceof Class)
+        {
+            println();
+            return;
         }
-    }
+
+        def value = null;
+        try
+        {
+            value = o.getProperty(obj);
+            println(String.format("   =   (%s) %s", value?.class, value));
+        }
+        catch(Exception e)
+        {
+            println(" = [N/A]");
+        }
+    })
+
+    println("=====Object=====");
+    println(obj.class);
+    println(obj);
+    println('==========Info End==========');
 
 }
 
-project(":teavm") {
-
-}
 
 
 //タスクを作成
@@ -89,48 +112,25 @@ task printTest {
 
     //最後の処理を設定
     doLast {
-        println('==========Task Start==========');
-        
-        def obj = this.jar;
-        
-        println("=====Method=====");
-        obj.metaClass.getMetaMethods().forEach({println(getSignature())});
-        println("=====Property=====");
-        obj.metaClass.getProperties().forEach({
 
-            print(String.format("(%s) %s", getType(), getName()));
-            if(obj instanceof Class)
-            {
-                println();
-                return;
-            }
-
-            def value = null;
-            try
-            {
-                value = getProperty(obj);
-                println(String.format("   =   (%s) %s", value?.class, value));
-            }
-            catch(Exception e)
-            {
-                println(" = [N/A]");
-            }
-        })
-
-        println("=====Object=====");
-        println(obj.class);
-        println(obj);
-        println('==========Task End==========');
+        rootProject.printObjectInfo(this);
     }
-
 }
 
-
-
-
-
-
-
+gradle.taskGraph.whenReady {taskGraph ->
+    println "Found task graph: " + taskGraph
+    println "Found " + taskGraph.allTasks.size() + " tasks."
+    taskGraph.allTasks.forEach { task ->
+        println task
+        task.dependsOn.forEach { dep ->
+            println "  -dep   " + dep
+        }
+        
+        task.mustRunAfter.each { dep -> 
+            println "  -after " + dep
+        }
+    }
+}
 
 
 

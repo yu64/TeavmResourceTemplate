@@ -7,9 +7,12 @@ plugins {
 	
 }
 
+eclipse.project.name = "teavm"
+
 ext {
 
-	teavmOutputPath = "test/resources/";
+	teavmOutputPackage = "test/resources/";
+	teavmOutput = "${project.buildDir}/resources/main";
 }
 
 dependencies {
@@ -18,14 +21,10 @@ dependencies {
 }
 
 
-    
-
-
-eclipse.project.name = "teavm"
-
+//TeaVMの設定
 teavm {
 
-	targetDirectory = new File("${project.buildDir}/resources/main/${teavmOutputPath}");
+	targetDirectory = new File("${teavmOutput}/${teavmOutputPackage}");
 	mainClass = "test.teavm.Main";
 	entryPointName = "callTeavmScript";
 	targetFileName = "app.js"
@@ -35,12 +34,46 @@ teavm {
 processResources.dependsOn 'teavmc'
 
 
-classes.dependsOn -= 'complieJava'
-//complieJava.mustRunAfter 'classes'
 
-//Java部分を除外
-// tasks.withType(Jar) {
 
-//     exclude("**/*.class")
-// }
+configurations {
+    teavmJar {
+        canBeConsumed = true
+        canBeResolved = false
+        
+		attributes {
+            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.LIBRARY))
+            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling, Bundling.EXTERNAL))
+            attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, JavaVersion.current().majorVersion.toInteger())
+            attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements, 'jar'))
+		}
+    }
+
+	runtimeClasspath {
+        attributes {
+            attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements, 'jar'))
+        }
+    }
+}
+
+//リソースだけのJarを作成するタスク
+task resourceJar(type: Jar, dependsOn: processResources) {
+
+	classifier "resources"
+	from fileTree("${project.buildDir}/resources/main/")
+}
+
+
+//成果物を設定
+artifacts {
+
+	teavmJar resourceJar
+}
+
+//ビルドしたときに生成されるように登録
+assemble.dependsOn resourceJar
+
+
+
 

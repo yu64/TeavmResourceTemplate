@@ -6,7 +6,22 @@ plugins {
 	//id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
 
+eclipse.project.name = "app"
+
+application {
+
+	mainClassName = "test.Main"
+}
+
 dependencies {
+
+	// implementation(project(":teavm")) {
+
+	// 		exclude group: '*', module: '*'
+	// }
+    
+	//implementation project(':teavm')
+	implementation(project(path: ":teavm", configuration: 'teavmJar'))
 
 	implementation 'io.github.classgraph:classgraph:4.8.147'
 	implementation 'com.github.pcdv.flak:flak-api:2.1.0'
@@ -19,12 +34,10 @@ dependencies {
 
 
 
-eclipse.project.name = "app"
 
-application {
 
-	mainClassName = "test.Main"
-}
+
+//compileJava.dependsOn project(":teavm").build;
 
 //TeaVMのサブプロジェクトから、すべての内容をこのプロジェクトのJarに入れる
 // jar {
