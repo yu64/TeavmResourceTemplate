@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import flak.App;
 import flak.Flak;
 import flak.annotations.Route;
-import test.innner.Test;
 
 public class Main {
 
@@ -25,9 +24,6 @@ public class Main {
 
 		Desktop.getDesktop().browse(new URI(app.getRootUrl()));
 		System.out.println("http://localhost:8080/stop");
-		
-		Test test = new Test();
-		test.teavm.Main main = new test.teavm.Main();
 		
 	}
 

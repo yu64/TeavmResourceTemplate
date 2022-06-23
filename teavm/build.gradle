@@ -15,10 +15,40 @@ ext {
 	teavmOutput = "${project.buildDir}/resources/main";
 }
 
+configurations {
+
+	//TeaVMの生成物が含まれたJarの構成設定をする。
+	//依存関係は、推移しない。
+    teavmJar {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+}
+
 dependencies {
 
 	implementation 'org.teavm:teavm-jso-apis:0.7.0'
 }
+
+
+
+//TeaVMの生成物が含まれたJarを作成するタスク
+task createTeavmJar(type: Jar, dependsOn: processResources) {
+
+	classifier "resources"
+	from fileTree("${project.buildDir}/resources/main/")
+}
+
+//成果物を設定
+artifacts {
+
+	//構成と生成タスクを紐づける
+	teavmJar createTeavmJar
+}
+
+//ビルドしたときに生成されるように登録
+assemble.dependsOn createTeavmJar
+
 
 
 //TeaVMの設定
@@ -32,48 +62,3 @@ teavm {
 
 //リソースを確定させる前に、TeaVMでリソースを生成させる
 processResources.dependsOn 'teavmc'
-
-
-
-
-configurations {
-    teavmJar {
-        canBeConsumed = true
-        canBeResolved = false
-        
-		attributes {
-            attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category, Category.LIBRARY))
-            attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
-            attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling, Bundling.EXTERNAL))
-            attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, JavaVersion.current().majorVersion.toInteger())
-            attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements, 'jar'))
-		}
-    }
-
-	runtimeClasspath {
-        attributes {
-            attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements, 'jar'))
-        }
-    }
-}
-
-//リソースだけのJarを作成するタスク
-task resourceJar(type: Jar, dependsOn: processResources) {
-
-	classifier "resources"
-	from fileTree("${project.buildDir}/resources/main/")
-}
-
-
-//成果物を設定
-artifacts {
-
-	teavmJar resourceJar
-}
-
-//ビルドしたときに生成されるように登録
-assemble.dependsOn resourceJar
-
-
-
-

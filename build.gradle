@@ -16,8 +16,13 @@ allprojects {
 
     apply plugin: "eclipse"
     
-    eclipse.classpath.downloadJavadoc = true
-    eclipse.classpath.downloadSources = true
+    eclipse.classpath {
+        
+        
+        downloadJavadoc = true
+        downloadSources = true
+        defaultOutputDir = file('build/eclipse')
+    }
     
     repositories {
 
@@ -60,10 +65,6 @@ subprojects {
 	}
 }
 
-ext.getAllResources = {src ->
-
-    return src.allSource - src.allJava;
-}
 
 
 
